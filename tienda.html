@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz de Tienda</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ec9f9f;
+        }
+        #productInfo {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e2e3e5;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Gestión de Productos</h1>
+        
+        <div class="form-section mb-4">
+            <h2>Agregar Producto</h2>
+            <form id="addProductForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="productName" placeholder="Nombre del Producto" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="productPrice" placeholder="Precio" required>
+                </div>
+                <button type="submit" class="btn btn-success">Agregar</button>
+            </form>
+        </div>
+
+        <div class="form-section mb-4">
+            <h2>Eliminar Producto</h2>
+            <form id="removeProductForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="removeProductName" placeholder="Nombre del Producto" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            </form>
+        </div>
+
+        <div class="form-section mb-4">
+            <h2>Consultar Producto</h2>
+            <form id="consultProductForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="consultProductName" placeholder="Nombre del Producto" required>
+                </div>
+                <button type="submit" class="btn btn-info">Consultar</button>
+            </form>
+            <div id="productInfo"></div>
+        </div>
+
+        <div class="form-section mb-4">
+            <h2>Modificar Producto</h2>
+            <form id="modifyProductForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="modifyProductName" placeholder="Nombre del Producto a Modificar" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="modifyProductPrice" placeholder="Nuevo Precio" required>
+                </div>
+                <button type="submit" class="btn btn-warning">Modificar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let products = [];
+
+        document.getElementById('addProductForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('productName').value;
+            const price = document.getElementById('productPrice').value;
+            products.push({ name, price });
+            this.reset();
+        });
+
+        document.getElementById('removeProductForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('removeProductName').value;
+            products = products.filter(product => product.name !== name);
+            this.reset(); 
+        });
+
+        document.getElementById('consultProductForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('consultProductName').value;
+            const product = products.find(product => product.name === name);
+            const productInfo = document.getElementById('productInfo');
+            if (product) {
+                productInfo.innerHTML = `Nombre: ${product.name} <br> Precio: $${product.price}`;
+            } else {
+                productInfo.innerHTML = `Producto "${name}" no encontrado.`;
+            }
+            this.reset(); 
+        });
+
+        document.getElementById('modifyProductForm').addEventListener('submit', function(event) {
+            event .preventDefault();
+            const name = document.getElementById('modifyProductName').value;
+            const newPrice = document.getElementById('modifyProductPrice').value;
+            const productIndex = products.findIndex(product => product.name === name);
+            if (productIndex !== -1) {
+                products[productIndex].price = newPrice;
+            }
+            this.reset(); 
+        });
+    </script>
+</body>
+</html>
